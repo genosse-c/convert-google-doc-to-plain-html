@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <script>
+    function storeFormData(){
+      const form = document.querySelector('form');
+      let formData = {};
+      for (const pair of new FormData(form)) {
+        formData[pair[0]] = pair[1];
+      }
+      google.script.run.storeSettings(formData);
+      google.script.host.close();
+    }
+    </script>
+  </head>
+  <body>
+    <? var settings = retrieveSettings(); ?>
+    <form>
+      <? for (const key in settings) { ?>
+        <p>
+          <input type="checkbox" id="setting-<?= key ?>" name="<?= key ?>" <? if (settings[key].value) { ?><?= "checked" ?><? } ?> />
+          <label for="setting-<?= key ?>"><?= settings[key].label ?></label>
+        </p>
+      <? } ?>
+       <input type="button" value="Save" onclick="storeFormData()" />
+    </form>
+  </body>
+</html>
